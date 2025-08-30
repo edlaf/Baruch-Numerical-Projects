@@ -3,7 +3,9 @@
 LU::LU(Matrix A):A_(A){
     
 }
-Matrix LU::decompose(){}
+Matrix LU::decompose(){
+    return A_;
+}
 
 Matrix LU::test(){
     return A_;

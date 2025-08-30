@@ -7,7 +7,7 @@ SRCS := testing.cpp \
 		LU_decomposition/LU_decomposition.cpp \
         Linear_Algebra_operators/vector.cpp \
         Linear_Algebra_operators/matrix.cpp \
-		Linear_Algebra_operators/operator.cpp \
+		Linear_Algebra_operators/operators.cpp \
 		Inverse/Inverse.cpp \
 
 OBJS := $(SRCS:.cpp=.o)

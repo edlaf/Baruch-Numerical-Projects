@@ -100,7 +100,7 @@ double Vector::mean() const { return sum()/size(); }
 double Vector::var() const {
     double m=mean(), v=0;
     for (double x:vect_) v+=(x-m)*(x-m);
-    return v/size();
+    return v/(size()-1);
 }
 
 double Vector::std() const { return std::sqrt(var()); }

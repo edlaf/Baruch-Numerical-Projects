@@ -11,9 +11,11 @@ public:
 
     Cholesky(Matrix A);
 
-    Matrix test();
+    double verify_Cholesky();
     Matrix decompose();
 
 private:
     Matrix A_;
+    Matrix L;
+    size_t n_;
 };

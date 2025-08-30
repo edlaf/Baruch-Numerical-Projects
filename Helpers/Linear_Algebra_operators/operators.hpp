@@ -6,16 +6,34 @@
 #include "../Inverse/Inverse.hpp"
 
 /**
- * @brief Apply LU decomposition on a matrix
+ * @brief Apply LU decomposition on a matrix.
+ *
+ * Factorizes the matrix A into L (lower triangular) and U (upper triangular),
+ * such that A = L * U.
+ *
+ * @param A Input square matrix (must be non-singular).
+ * @return A Matrix that encodes the LU decomposition (implementation-dependent).
  */
 Matrix LU_decompose(const Matrix& A);
 
 /**
- * @brief Apply Cholesky decomposition on a matrix
+ * @brief Apply Cholesky decomposition on a matrix.
+ *
+ * Factorizes the matrix A into L (lower triangular),
+ * such that A = L * L^T. Requires A to be symmetric positive definite (SPD).
+ *
+ * @param A Input square SPD matrix.
+ * @return Lower triangular matrix L.
  */
 Matrix Cholesky_decompose(const Matrix& A);
 
 /**
- * @brief Compute inverse of a matrix
+ * @brief Compute the inverse of a matrix.
+ *
+ * Uses Gaussian elimination, LU decomposition, or other methods depending
+ * on implementation. The matrix must be non-singular.
+ *
+ * @param A Input square matrix.
+ * @return Inverse matrix A⁻¹.
  */
 Matrix inverse(const Matrix& A);

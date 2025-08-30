@@ -2,10 +2,50 @@
 #include <algorithm>
 
 Matrix::Matrix(size_t rows, size_t cols) : rows_(rows), cols_(cols), data_(rows, std::vector<double>(cols, 0.0)) {}
-Matrix::Matrix(size_t rows, size_t cols, const std::vector<std::vector<double>>& data) 
+Matrix::Matrix(size_t rows, size_t cols, const std::vector<std::vector<double>>& data)
     : rows_(rows), cols_(cols), data_(data) {
     if (data.size() != rows || (rows > 0 && data[0].size() != cols))
         throw std::runtime_error("Matrix size mismatch");
+}
+Matrix::Matrix(std::initializer_list<std::initializer_list<double>> values) {
+    rows_ = values.size();
+    cols_ = values.begin()->size();
+
+    for (const auto& row : values) {
+        if (row.size() != cols_) {
+            throw std::runtime_error("Inconsistent row sizes in initializer list");
+        }
+    }
+
+    data_.resize(rows_, std::vector<double>(cols_, 0.0));
+    size_t i = 0;
+    for (const auto& row : values) {
+        size_t j = 0;
+        for (const auto& val : row) {
+            data_[i][j++] = val;
+        }
+        i++;
+    }
+}
+Matrix::Matrix(const std::vector<Vector>& vectors) {
+    if (vectors.empty()) throw std::runtime_error("No vectors provided");
+
+    size_t n = vectors[0].size();
+    size_t m = vectors.size();
+
+    for (const auto& v : vectors) {
+        if (v.size() != n) throw std::runtime_error("All vectors must have the same size");
+    }
+
+    rows_ = n;
+    cols_ = m;
+    data_ = std::vector<std::vector<double>>(rows_, std::vector<double>(cols_, 0.0));
+
+    for (size_t j = 0; j < m; j++) {
+        for (size_t i = 0; i < n; i++) {
+            data_[i][j] = vectors[j][i];
+        }
+    }
 }
 
 size_t Matrix::rows() const { return rows_; }
@@ -133,4 +173,14 @@ Matrix Matrix::transpose() const {
     Matrix res(cols_, rows_);
     for (size_t i=0;i<rows_;i++) for (size_t j=0;j<cols_;j++) res(j,i)=data_[i][j];
     return res;
+}
+
+double Matrix::norm() const {
+    double s = 0.0;
+    for (size_t i = 0; i < rows_; i++) {
+        for (size_t j = 0; j < cols_; j++) {
+            s += data_[i][j] * data_[i][j];
+        }
+    }
+    return std::sqrt(s);
 }
