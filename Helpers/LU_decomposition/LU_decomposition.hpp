@@ -4,11 +4,11 @@
 #include <tuple>
 #include "../Linear_Algebra_operators/matrix.hpp"
 
-class Cholesky{
+class LU{
 
 public:
 
-    Cholesky(Matrix A);
+    LU(Matrix A);
 
     Matrix test();
     Matrix decompose();

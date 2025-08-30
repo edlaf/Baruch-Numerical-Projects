@@ -1,13 +1,10 @@
 #include "Cholesky.hpp"
 
-Cholesky::Cholesky(){
-
-}
-
-Cholesky::Cholesky(double x):x_(x){
+Cholesky::Cholesky(Matrix A):A_(A){
     
 }
+Matrix Cholesky::decompose(){}
 
-double Cholesky::test(){
-    return x_;
+Matrix Cholesky::test(){
+    return A_;
 }
