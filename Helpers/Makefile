@@ -1,9 +1,8 @@
-# Makefile (dans HW1/Helpers/)
 CXX := g++
 CXXFLAGS := -std=c++17 -O2 -Wall -Wextra -MMD -MP -I. -ICholesky
 
 TARGET := testing
-SRCS := testing.cpp Cholesky/Cholesky.cpp
+SRCS := testing.cpp Cholesky/Cholesky.cpp Linear_Algebra_operators/vector.cpp Linear_Algebra_operators/matrix.cpp
 OBJS := $(SRCS:.cpp=.o)
 DEPS := $(OBJS:.o=.d)
 
