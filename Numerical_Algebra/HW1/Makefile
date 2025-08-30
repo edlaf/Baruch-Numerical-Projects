@@ -1,15 +1,15 @@
+# Makefile
 CXX := g++
-CXXFLAGS := -std=c++17 -O2 -Wall -Wextra -pedantic
+CXXFLAGS := -std=c++17 -O2 -Wall -Wextra -I../../Helpers
 
 TARGET := main
-SRC := $(TARGET).cpp
+SRCS := main.cpp ../../Helpers/Cholesky/Cholesky.cpp
 
 .PHONY: all run clean
-
 all: $(TARGET)
 
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) $< -o $@
+$(TARGET): $(SRCS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
 run: $(TARGET)
 	./$(TARGET)
