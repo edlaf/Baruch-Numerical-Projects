@@ -3,6 +3,7 @@
 #include <vector>
 #include <tuple>
 #include "../Linear_Algebra_operators/matrix.hpp"
+#include "../Linear_Algebra_operators/vector.hpp"
 
 class Cholesky{
 
