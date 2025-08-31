@@ -16,6 +16,3 @@ int main() {
 // If you are not coding with makefile then god bless you
 
 // We can create a dll if needed to see the results in python or use cython I guess
-
-
-
