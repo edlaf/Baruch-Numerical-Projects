@@ -14,7 +14,18 @@
  * @param A Input square matrix (must be non-singular).
  * @return A Matrix that encodes the LU decomposition (implementation-dependent).
  */
-Matrix LU_decompose(const Matrix& A);
+std::vector<Matrix> LU_decompose_with_pivot(const Matrix& A);
+
+/**
+ * @brief Apply LU decomposition on a matrix.
+ *
+ * Factorizes the matrix A into L (lower triangular) and U (upper triangular),
+ * such that A = L * U.
+ *
+ * @param A Input square matrix (must be non-singular).
+ * @return A Matrix that encodes the LU decomposition (implementation-dependent).
+ */
+std::vector<Matrix> LU_decompose_without_pivot(const Matrix& A);
 
 /**
  * @brief Apply Cholesky decomposition on a matrix.

@@ -10,9 +10,14 @@ public:
 
     LU(Matrix A);
 
-    Matrix test();
-    Matrix decompose();
+    double verify_();
+    std::vector<Matrix> decompose_without_pivot();
+    std::vector<Matrix> decompose_with_pivot();
 
 private:
     Matrix A_;
+    Matrix L;
+    Matrix U;
+    Matrix P;
+    size_t n_;
 };

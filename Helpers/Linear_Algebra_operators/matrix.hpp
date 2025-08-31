@@ -197,6 +197,37 @@ public:
      */
     double norm() const;
 
+        /**
+     * @brief Swap two rows in the matrix
+     * @param i Index of the first row
+     * @param j Index of the second row
+     */
+    void swapRows(size_t i, size_t j);
+
+    /**
+     * @brief Swap two columns in the matrix
+     * @param i Index of the first column
+     * @param j Index of the second column
+     */
+    void swapCols(size_t i, size_t j);
+
+    /**
+     * @brief Swap two elements in the matrix
+     * @param i1 Row index of the first element
+     * @param j1 Column index of the first element
+     * @param i2 Row index of the second element
+     * @param j2 Column index of the second element
+     */
+    void swapElements(size_t i1, size_t j1, size_t i2, size_t j2);
+
+    /**
+     * @brief Create an identity matrix of size n×n (alias for identity)
+     * @param n Number of rows/columns
+     * @return Identity matrix
+     */
+    static Matrix eye(size_t n);
+
+
 private:
     size_t rows_, cols_;
     std::vector<std::vector<double>> data_;

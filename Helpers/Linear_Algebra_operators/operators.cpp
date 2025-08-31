@@ -1,8 +1,13 @@
 #include "operators.hpp"
 
-Matrix LU_decompose(const Matrix& A) {
+std::vector<Matrix> LU_decompose_with_pivot(const Matrix& A) {
     LU lu(A);
-    return lu.decompose();
+    return lu.decompose_with_pivot();
+}
+
+std::vector<Matrix> LU_decompose_without_pivot(const Matrix& A) {
+    LU lu(A);
+    return lu.decompose_without_pivot();
 }
 
 Matrix Cholesky_decompose(const Matrix& A) {

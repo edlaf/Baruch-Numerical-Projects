@@ -184,3 +184,28 @@ double Matrix::norm() const {
     }
     return std::sqrt(s);
 }
+
+void Matrix::swapRows(size_t i, size_t j) {
+    if (i >= rows_ || j >= rows_)
+        throw std::out_of_range("Row index out of range");
+    std::swap(data_[i], data_[j]);
+}
+
+void Matrix::swapCols(size_t i, size_t j) {
+    if (i >= cols_ || j >= cols_)
+        throw std::out_of_range("Column index out of range");
+    for (size_t r = 0; r < rows_; r++) {
+        std::swap(data_[r][i], data_[r][j]);
+    }
+}
+
+void Matrix::swapElements(size_t i1, size_t j1, size_t i2, size_t j2) {
+    if (i1 >= rows_ || i2 >= rows_ || j1 >= cols_ || j2 >= cols_) {
+        throw std::out_of_range("Matrix::swapElements indices out of range");
+    }
+    std::swap(data_[i1][j1], data_[i2][j2]);
+}
+
+Matrix Matrix::eye(size_t n) {
+    return Matrix::identity(n);
+}

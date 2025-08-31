@@ -1,6 +1,6 @@
 #include "Cholesky.hpp"
 
-Cholesky::Cholesky(Matrix A):A_(A) ,L(Matrix::zeros(A.rows(), A.rows())), n_(A.rows()){}
+Cholesky::Cholesky(Matrix A):A_(A), L(Matrix::zeros(A.rows(), A.rows())), n_(A.rows()){}
 
 Matrix Cholesky::decompose(){
     for (size_t i = 0; i < n_; i++){
