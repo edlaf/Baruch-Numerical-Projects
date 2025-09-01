@@ -1,4 +1,5 @@
 #include "operators.hpp"
+#include "../Linear_system_solvers/Ordinary_least_square.hpp"
 
 std::vector<Matrix> LU_decompose_with_pivot(const Matrix& A) {
     LU lu(A);
@@ -38,4 +39,8 @@ Vector system_solver(const Matrix& A, const Vector& b, const std::string& method
     else {
         throw std::runtime_error("Méthode inconnue : " + method);
     }
+}
+
+OLS Linear_Regression_OLS(const Matrix& X, const Vector& y, bool add_intercept) {
+    return OLS(X, y, add_intercept);
 }

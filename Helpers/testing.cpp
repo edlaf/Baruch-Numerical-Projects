@@ -3,21 +3,48 @@
 #include "../Linear_Algebra_operators/operators.hpp"
 #include "../Cholesky/Cholesky.hpp"
 #include "../Linear_system_solvers/Linear_solver.hpp"
+#include "../Linear_system_solvers/Ordinary_least_square.hpp"
 
 int main() {
-    Matrix A({
-        {4, 2},
-        {2, 3}
+// =========================
+    // Jeu de données simple
+    // y = 2 + 3x
+    // =========================
+    Matrix X({
+        {1, 1},
+        {1, 2},
+        {1, 3},
+        {1, 4}
     });
-    Vector b({6, 8});
+    Vector y({5, 8, 11, 14});  // vrai modèle : 2 + 3x
 
-    std::cout << "=== Test system_solver ===" << std::endl;
+    // =========================
+    // Créer le modèle OLS
+    // =========================
+    OLS model = Linear_Regression_OLS(X, y);
 
-    Vector x1 = system_solver(A, b, "cholesky");
-    std::cout << "Cholesky solution: " << x1 << std::endl;
+    // =========================
+    // Entraîner le modèle
+    // =========================
+    model.fit();
 
-    Vector x2 = system_solver(A, b, "lu");
-    std::cout << "LU (pivot) solution: " << x2 << std::endl;
+    // =========================
+    // Afficher les coefficients
+    // =========================
+    std::cout << "Coefficients estimés : " << model.coefs() << std::endl;
+
+    // =========================
+    // Prédictions sur X existant
+    // =========================
+    Vector preds = model.predict(X);
+    std::cout << "Prédictions : " << preds << std::endl;
+
+    // =========================
+    // Prédiction pour un nouveau x = 5
+    // =========================
+    Vector x_new({1, 5});  // 1 = biais, 5 = valeur de x
+    double y_pred = model.predict(x_new);
+    std::cout << "Prédiction pour x=5 : " << y_pred << std::endl;
 
     return 0;
 }

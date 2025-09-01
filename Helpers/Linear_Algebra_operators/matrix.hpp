@@ -235,7 +235,20 @@ public:
      */
     static bool is_triangular(const Matrix& M, bool up = true);
 
-
+    /**
+     * @brief Retourne une nouvelle matrice avec une colonne de 1 ajoutée au début.
+     *
+     * Exemple :
+     *  X = [[x11, x12],
+     *       [x21, x22]]
+     *
+     *  X.add_intercept_column() =
+     *      [[1, x11, x12],
+     *       [1, x21, x22]]
+     *
+     * @return Matrix avec une colonne de 1 en plus.
+     */
+    Matrix add_intercept_column() const;
 private:
     size_t rows_, cols_;
     std::vector<std::vector<double>> data_;

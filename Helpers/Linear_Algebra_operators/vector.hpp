@@ -311,6 +311,9 @@ public:
     /** @brief Return the size of the vector. */
     static size_t len(Vector& vect);
 
+    /** @brief Euclidian scalar product */
+    double dot(const Vector& other) const;
+
 private:
     std::vector<double> vect_;
 };

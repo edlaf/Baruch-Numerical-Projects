@@ -9,6 +9,7 @@ SRCS := testing.cpp \
         Linear_Algebra_operators/matrix.cpp \
 		Linear_Algebra_operators/operators.cpp \
 		Linear_system_solvers/Linear_solver.cpp \
+		Linear_system_solvers/Ordinary_least_square.cpp \
 		Inverse/Inverse.cpp \
 
 OBJS := $(SRCS:.cpp=.o)

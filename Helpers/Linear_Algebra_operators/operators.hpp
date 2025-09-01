@@ -6,6 +6,7 @@
 #include "../Inverse/Inverse.hpp"
 #include "../Linear_system_solvers/Linear_solver.hpp"
 
+
 /**
  * @brief Apply LU decomposition on a matrix.
  *
@@ -67,3 +68,17 @@ Matrix inverse(const Matrix& A);
  * @throws std::runtime_error if the method is unknown or A is not suitable.
  */
 Vector system_solver(const Matrix& A, const Vector& b, const std::string& method = "lu");
+
+class OLS;
+/**
+ * @brief Create an Ordinary Least Squares (OLS) regression model.
+ *
+ * Initializes an OLS object with data (X, y), but does not fit it.
+ * You must call model.fit() explicitly before using predict().
+ *
+ * @param X Design matrix (with intercept column if needed).
+ * @param y Target vector.
+ * @param add_intercept Whether to automatically add an intercept column (default = true).
+ * @return Unfitted OLS model.
+ */
+OLS Linear_Regression_OLS(const Matrix& X, const Vector& y, bool add_intercept = true);

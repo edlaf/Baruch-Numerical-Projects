@@ -235,3 +235,17 @@ bool Matrix::is_triangular(const Matrix& M, bool up) {
         return true;
     }
 }
+
+Matrix Matrix::add_intercept_column() const {
+    Matrix Xnew(rows_, cols_ + 1);
+
+    for (size_t i = 0; i < rows_; ++i) {
+        Xnew(i, 0) = 1.0;
+        for (size_t j = 0; j < cols_; ++j) {
+            Xnew(i, j + 1) = data_[i][j];
+        }
+    }
+
+    return Xnew;
+}
+

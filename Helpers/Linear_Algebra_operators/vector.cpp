@@ -180,3 +180,14 @@ std::ostream& operator<<(std::ostream& os, const Vector& v){
 size_t Vector::len(Vector& vect){
     return vect.size();
 }
+
+double Vector::dot(const Vector& other) const {
+    if (size() != other.size()) {
+        throw std::runtime_error("Size mismatch in dot product");
+    }
+    double result = 0.0;
+    for (size_t i = 0; i < size(); ++i) {
+        result += vect_[i] * other[i];
+    }
+    return result;
+}
