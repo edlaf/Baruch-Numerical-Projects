@@ -308,6 +308,9 @@ public:
     /** @brief Print operator. */
     friend std::ostream& operator<<(std::ostream& os, const Vector& v);
 
+    /** @brief Return the size of the vector. */
+    static size_t len(Vector& vect);
+
 private:
     std::vector<double> vect_;
 };

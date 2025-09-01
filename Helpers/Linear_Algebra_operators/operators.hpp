@@ -4,6 +4,7 @@
 #include "../Cholesky/Cholesky.hpp"
 #include "../LU_decomposition/LU_decomposition.hpp"
 #include "../Inverse/Inverse.hpp"
+#include "../Linear_system_solvers/Linear_solver.hpp"
 
 /**
  * @brief Apply LU decomposition on a matrix.
@@ -48,3 +49,21 @@ Matrix Cholesky_decompose(const Matrix& A);
  * @return Inverse matrix A⁻¹.
  */
 Matrix inverse(const Matrix& A);
+
+/**
+ * @brief Solve a linear system Ax = b using a specified method.
+ *
+ * Available methods:
+ * - "diagonal"  : assumes A is diagonal
+ * - "triangular": assumes A is triangular (upper or lower)
+ * - "lu"        : LU decomposition with pivoting (default)
+ * - "cholesky"  : Cholesky decomposition (requires SPD matrix)
+ *
+ * @param A Input square matrix.
+ * @param b Right-hand side vector.
+ * @param method Solving method (default = "lu").
+ * @return Solution vector x such that A*x ≈ b.
+ *
+ * @throws std::runtime_error if the method is unknown or A is not suitable.
+ */
+Vector system_solver(const Matrix& A, const Vector& b, const std::string& method = "lu");

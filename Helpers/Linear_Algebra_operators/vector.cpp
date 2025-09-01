@@ -176,3 +176,7 @@ std::ostream& operator<<(std::ostream& os, const Vector& v){
     os << "]";
     return os;
 }
+
+size_t Vector::len(Vector& vect){
+    return vect.size();
+}

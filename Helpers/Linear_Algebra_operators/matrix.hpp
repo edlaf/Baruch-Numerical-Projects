@@ -227,6 +227,14 @@ public:
      */
     static Matrix eye(size_t n);
 
+    /**
+     * @brief test wether a matrix is up or down triangular
+     * @param M matrix
+     * @param up bool (true to cheak if it's a up triangular)
+     * @return bool = true if up (with up = true)
+     */
+    static bool is_triangular(const Matrix& M, bool up = true);
+
 
 private:
     size_t rows_, cols_;

@@ -209,3 +209,29 @@ void Matrix::swapElements(size_t i1, size_t j1, size_t i2, size_t j2) {
 Matrix Matrix::eye(size_t n) {
     return Matrix::identity(n);
 }
+
+bool Matrix::is_triangular(const Matrix& M, bool up) {
+    if (M.rows() != M.cols()) {
+        return false;
+    }
+
+    if (up) {
+        for (size_t i = 0; i < M.rows(); i++) {
+            for (size_t j = 0; j < i; j++) {
+                if (std::abs(M(i, j)) > 1e-13) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    } else {
+        for (size_t i = 0; i < M.rows(); i++) {
+            for (size_t j = i + 1; j < M.cols(); j++) {
+                if (std::abs(M(i, j)) > 1e-13) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
