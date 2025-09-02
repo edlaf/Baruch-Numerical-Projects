@@ -12,6 +12,7 @@ SRCS := main.cpp \
 		../../Helpers/Linear_system_solvers/Linear_solver.cpp \
 		../../Helpers/Linear_system_solvers/Ordinary_least_square.cpp \
 		../../Helpers/Inverse/Inverse.cpp \
+		../../Helpers/Regressor/Cubic_splines/cubic_splines.cpp \
 
 .PHONY: all run clean
 all: $(TARGET)

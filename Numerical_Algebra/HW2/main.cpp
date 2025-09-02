@@ -1,12 +1,17 @@
 #include <iostream>
+#include <vector>
 #include "../../Helpers/Linear_Algebra_operators/vector.hpp"
 #include "../../Helpers/Linear_Algebra_operators/matrix.hpp"
 #include "../../Helpers/Linear_Algebra_operators/operators.hpp"
 #include "../../Helpers/Linear_system_solvers/Ordinary_least_square.hpp"
-
+#include "../../Helpers/Regressor/Cubic_splines/cubic_splines.hpp"
 
 int main() {
     std::cout << "--- HW2 ---" << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "" << std::endl;
+
+    std::cout << "-- Exercice 1 --" << std::endl;
     std::cout << "" << std::endl;
 
     Vector T2({1.69, 1.81, 1.81, 1.79, 1.79,1.83, 1.81, 1.81, 1.83, 1.81, 1.82, 1.82, 1.80, 1.78, 1.79});
@@ -16,34 +21,55 @@ int main() {
 
     std::cout << "- Question 1" << std::endl;
     Matrix X = Matrix({T2, T5, T10});
-
     OLS model = Linear_Regression_OLS(X, T3, true);
-
     model.fit();
-
     std::cout << "Coefs : " << model.coefs() << std::endl;
     std::cout << "Error : " << model.error(X, T3) << std::endl;
 
     std::cout << "- Question 2" << std::endl;
-    X = Matrix({T2, T5});
+    Vector T3_linear_interp = (2.0/3.0)*T2 + (1.0/3.0)*T5;
+    std::cout << "Error : " << (T3 - T3_linear_interp).norm(2) << std::endl;
 
-    model = Linear_Regression_OLS(X, T3, false);
+    std::cout << "- Question 3 (natural: s0=0, sn=0 -> natural BC)" << std::endl;
+    std::vector<double> t3_nat; t3_nat.reserve(T2.size());
+    for (size_t i = 0; i < T2.size(); ++i) {
+        Vector xi({2.0, 5.0, 10.0});
+        Vector yi({T2[(int)i], T5[(int)i], T10[(int)i]});
+        Cubic_spline sp{xi, yi};
+        sp.fit(0.0, 0.0);
+        t3_nat.push_back(sp.predict(3.0));
+    }
+    Vector T3_cubic_nat(t3_nat);
+    std::cout << "Error : " << (T3 - T3_cubic_nat).norm(2) << std::endl;
 
-    model.fit();
+    std::cout << "- Question 3 (clamped with secant endpoint slopes)" << std::endl;
+    std::vector<double> t3_sec; t3_sec.reserve(T2.size());
+    for (size_t i = 0; i < T2.size(); ++i) {
+        Vector xi({2.0, 5.0, 10.0});
+        Vector yi({T2[(int)i], T5[(int)i], T10[(int)i]});
+        double s0 = (yi[1] - yi[0]) / (5.0 - 2.0);
+        double sn = (yi[2] - yi[1]) / (10.0 - 5.0);
+        Cubic_spline sp{xi, yi};
+        sp.fit(s0, sn);
+        t3_sec.push_back(sp.predict(3.0));
+    }
+    Vector T3_cubic_sec(t3_sec);
+    std::cout << "Error : " << (T3 - T3_cubic_sec).norm(2) << std::endl;
 
-    std::cout << "Coefs : " << model.coefs() << std::endl;
-    std::cout << "Error : " << model.error(X, T3) << std::endl;
+    std::cout << "- Question 3 (clamped with parabolic endpoint slopes)" << std::endl;
+    std::vector<double> t3_par; t3_par.reserve(T2.size());
+    for (size_t i = 0; i < T2.size(); ++i) {
+        Vector xi({2.0, 5.0, 10.0});
+        Vector yi({T2[(int)i], T5[(int)i], T10[(int)i]});
+        double y0 = yi[0], y1 = yi[1], y2 = yi[2];
+        double s0 = (-11.0/24.0)*y0 + (8.0/15.0)*y1 + (-3.0/40.0)*y2;
+        double sn = (  5.0/24.0)*y0 + (-8.0/15.0)*y1 + (13.0/40.0)*y2;
+        Cubic_spline sp{xi, yi};
+        sp.fit(s0, sn);
+        t3_par.push_back(sp.predict(3.0));
+    }
+    Vector T3_cubic_par(t3_par);
+    std::cout << "Error : " << (T3 - T3_cubic_par).norm(2) << std::endl;
 
     return 0;
 }
-
-// To run it:
-
-// open terminal at the root of the repositorT10 (got there using cd)
-// Then cd Numerical_Algebra and cd HW1
-// run make everT10time T10ou do and udpate to the code
-// run ./main to run the main.cpp
-
-// If T10ou are not coding with makefile then god bless T10ou
-
-// We can create a dll if needed to see the results in pT10thon or use cT10thon I guess

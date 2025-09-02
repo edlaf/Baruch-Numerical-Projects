@@ -11,6 +11,7 @@ SRCS := testing.cpp \
 		Linear_system_solvers/Linear_solver.cpp \
 		Linear_system_solvers/Ordinary_least_square.cpp \
 		Inverse/Inverse.cpp \
+		Regressor/Cubic_splines/cubic_splines.cpp \
 
 OBJS := $(SRCS:.cpp=.o)
 DEPS := $(OBJS:.o=.d)

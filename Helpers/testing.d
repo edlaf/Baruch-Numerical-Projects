@@ -19,7 +19,12 @@ testing.o: testing.cpp Cholesky/../Linear_Algebra_operators/vector.hpp \
   Cholesky/../Linear_system_solvers/../Linear_Algebra_operators/matrix.hpp \
   Cholesky/../Linear_system_solvers/../Linear_Algebra_operators/vector.hpp \
   Cholesky/../Linear_system_solvers/../Cholesky/Cholesky.hpp \
-  Cholesky/../Linear_system_solvers/../Linear_system_solvers/Linear_solver.hpp
+  Cholesky/../Linear_system_solvers/../Linear_system_solvers/Linear_solver.hpp \
+  Cholesky/../Regressor/Cubic_splines/cubic_splines.hpp \
+  Cholesky/../Regressor/Cubic_splines/../../Linear_Algebra_operators/vector.hpp \
+  Cholesky/../Regressor/Cubic_splines/../../Linear_Algebra_operators/matrix.hpp \
+  Cholesky/../Regressor/Cubic_splines/../../Linear_Algebra_operators/operators.hpp \
+  Cholesky/../Regressor/Cubic_splines/../../Linear_system_solvers/Linear_solver.hpp
 Cholesky/../Linear_Algebra_operators/vector.hpp:
 Cholesky/../Linear_Algebra_operators/matrix.hpp:
 Cholesky/../Linear_Algebra_operators/operators.hpp:
@@ -42,3 +47,8 @@ Cholesky/../Linear_system_solvers/../Linear_Algebra_operators/matrix.hpp:
 Cholesky/../Linear_system_solvers/../Linear_Algebra_operators/vector.hpp:
 Cholesky/../Linear_system_solvers/../Cholesky/Cholesky.hpp:
 Cholesky/../Linear_system_solvers/../Linear_system_solvers/Linear_solver.hpp:
+Cholesky/../Regressor/Cubic_splines/cubic_splines.hpp:
+Cholesky/../Regressor/Cubic_splines/../../Linear_Algebra_operators/vector.hpp:
+Cholesky/../Regressor/Cubic_splines/../../Linear_Algebra_operators/matrix.hpp:
+Cholesky/../Regressor/Cubic_splines/../../Linear_Algebra_operators/operators.hpp:
+Cholesky/../Regressor/Cubic_splines/../../Linear_system_solvers/Linear_solver.hpp:

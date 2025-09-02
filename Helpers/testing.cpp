@@ -4,103 +4,92 @@
 #include "../Cholesky/Cholesky.hpp"
 #include "../Linear_system_solvers/Linear_solver.hpp"
 #include "../Linear_system_solvers/Ordinary_least_square.hpp"
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+#include "../Regressor/Cubic_splines/cubic_splines.hpp"
+
+static constexpr double PI = 3.141592653589793238462643383279502884;
 
 int main() {
-// =========================
-    // Jeu de données simple
-    // y = 2 + 3x
-    // =========================
-    Matrix X({
-        {1, 1},
-        {1, 2},
-        {1, 3},
-        {1, 4}
-    });
-    Vector y({5, 8, 11, 14});  // vrai modèle : 2 + 3x
+    std::cout.setf(std::ios::fixed);
+    std::cout << std::setprecision(8);
 
-    // =========================
-    // Créer le modèle OLS
-    // =========================
-    OLS model = Linear_Regression_OLS(X, y);
+    std::vector<double> xs;
+    for (int i = 0; i <= 16; ++i) xs.push_back((2.0 * PI) * i / 16.0);
 
-    // =========================
-    // Entraîner le modèle
-    // =========================
-    model.fit();
+    std::vector<double> ys(xs.size());
+    for (size_t i = 0; i < xs.size(); ++i) ys[i] = std::sin(xs[i]);
 
-    // =========================
-    // Afficher les coefficients
-    // =========================
-    std::cout << "Coefficients estimés : " << model.coefs() << std::endl;
+    Cubic_spline sp{ Vector(xs), Vector(ys) };
+    sp.fit();
 
-    // =========================
-    // Prédictions sur X existant
-    // =========================
-    Vector preds = model.predict(X);
-    std::cout << "Prédictions : " << preds << std::endl;
+    bool pass_knots = true;
+    for (size_t i = 0; i < xs.size(); ++i) {
+        double yhat = sp.predict(xs[i]);
+        if (std::abs(yhat - ys[i]) > 1e-10) {
+            pass_knots = false;
+            break;
+        }
+    }
+    std::cout << "[Test 1] Interpolation at knots: " << (pass_knots ? "PASS" : "FAIL") << "\n";
 
-    // =========================
-    // Prédiction pour un nouveau x = 5
-    // =========================
-    Vector x_new({1, 5});  // 1 = biais, 5 = valeur de x
-    double y_pred = model.predict(x_new);
-    std::cout << "Prédiction pour x=5 : " << y_pred << std::endl;
+    std::vector<double> xq;
+    for (int i = 0; i <= 400; ++i) xq.push_back((2.0 * PI) * i / 400.0);
+    Vector yq = sp.predict(Vector(xq));
+
+    double max_err = 0.0;
+    for (size_t i = 0; i < xq.size(); ++i) {
+        double err = std::abs(yq[(int)i] - std::sin(xq[i]));
+        if (err > max_err) max_err = err;
+    }
+    std::cout << "[Test 1] Max |error| vs sin(x) on [0,2π]: " << max_err << "\n";
+
+    auto num_deriv = [&](double x){
+        const double eps = 1e-6;
+        return (sp.predict(x + eps) - sp.predict(x - eps)) / (2.0 * eps);
+    };
+    double max_jump = 0.0;
+    for (size_t i = 1; i + 1 < xs.size(); ++i) {
+        double dl = num_deriv(xs[i] - 1e-6);
+        double dr = num_deriv(xs[i] + 1e-6);
+        max_jump = std::max(max_jump, std::abs(dl - dr));
+    }
+    std::cout << "[Test 1] Max |S'(x_i^-)-S'(x_i^+)|: " << max_jump << "\n";
+
+    std::vector<double> xu {0.0, 0.15, 0.35, 0.9, 1.7, 2.05, 3.4, 4.1, 5.0, 6.28};
+    std::vector<double> yu(xu.size());
+    for (size_t i = 0; i < xu.size(); ++i) yu[i] = std::sin(xu[i]);
+
+    Cubic_spline sp2{ Vector(xu), Vector(yu) };
+    sp2.fit();
+
+    bool pass_knots2 = true;
+    for (size_t i = 0; i < xu.size(); ++i) {
+        double yhat = sp2.predict(xu[i]);
+        if (std::abs(yhat - yu[i]) > 1e-10) {
+            pass_knots2 = false;
+            break;
+        }
+    }
+    std::cout << "[Test 2] Interpolation at knots (non-uniform): " << (pass_knots2 ? "PASS" : "FAIL") << "\n";
+
+    std::vector<double> xq2;
+    for (int i = 0; i <= 400; ++i) xq2.push_back((2.0 * PI) * i / 400.0);
+    Vector yq2 = sp2.predict(Vector(xq2));
+
+    double max_err2 = 0.0;
+    for (size_t i = 0; i < xq2.size(); ++i) {
+        double err = std::abs(yq2[(int)i] - std::sin(xq2[i]));
+        if (err > max_err2) max_err2 = err;
+    }
+    std::cout << "[Test 2] Max |error| vs sin(x) on [0,2π]: " << max_err2 << "\n";
+
+    double left_ex = sp.predict(xs.front() - 0.5);
+    double right_ex = sp.predict(xs.back() + 0.5);
+    std::cout << "[Test 3] Extrapolation: S(x0-0.5)=" << left_ex
+            << ", S(xn+0.5)=" << right_ex << "\n";
 
     return 0;
 }
-
-
-
-    // Matrix A({{4, 2},{2, 3}});
-    // std::cout << "Matrix A:" << std::endl;
-    // A.print();
-
-    // Matrix L = Cholesky_decompose(A);
-    // std::cout << "\nMatrix L (Cholesky factor):" << std::endl;
-    // L.print();
-
-    // Matrix approx = L * L.transpose();
-    // std::cout << "\nReconstructed A = L * L^T:" << std::endl;
-    // approx.print();
-
-    // double error = (A - approx).norm();
-    // std::cout << "\nVerification error ||A - L*L^T|| = " << error << std::endl;
-    // A = Matrix ({
-    //     {2, 1, 1},
-    //     {4, -6, 0},
-    //     {-2, 7, 2}
-    // });
-
-    // std::cout << "Matrix A:" << std::endl;
-    // A.print();
-
-    // auto LU_no_pivot = LU_decompose_without_pivot(A);
-    // Matrix L1 = LU_no_pivot[0];
-    // Matrix U1 = LU_no_pivot[1];
-
-    // std::cout << "\nLU decomposition WITHOUT pivoting:" << std::endl;
-    // std::cout << "L:" << std::endl;
-    // L1.print();
-    // std::cout << "U:" << std::endl;
-    // U1.print();
-
-    // double error1 = (A - (L1 * U1)).norm();
-    // std::cout << "Verification error ||A - L*U|| = " << error1 << std::endl;
-
-    // auto LU_pivot = LU_decompose_with_pivot(A);
-    // Matrix P = LU_pivot[0];
-    // Matrix L2 = LU_pivot[1];
-    // Matrix U2 = LU_pivot[2];
-
-    // std::cout << "\nLU decomposition WITH pivoting:" << std::endl;
-    // std::cout << "P:" << std::endl;
-    // P.print();
-    // std::cout << "L:" << std::endl;
-    // L2.print();
-    // std::cout << "U:" << std::endl;
-    // U2.print();
-
-    // double error2 = (P*A - (L2 * U2)).norm();
-    // std::cout << "Verification error ||PA - L*U|| = " << error2 << std::endl;
-
-    // return 0;
