@@ -1,6 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct LCG {
+    using u64 = unsigned long long;
+    static constexpr u64 MOD = 2147483647ULL;   // 2^31 - 1 (prime)
+    static constexpr u64 A   = 39373ULL;
+    static constexpr u64 C   = 0ULL;
+
+    u64 x;  // state in [0, MOD-1], we start with x0=1 (given)
+
+    explicit LCG(u64 x0 = 1ULL) : x(x0 % MOD) {}
+
+    // Next uniform in (0,1). Note: because x is in {1,...,MOD-1}, we never return 0 or 1.
+    double next_uniform() {
+        x = (A * x + C) % MOD;      // safe in 64-bit: A*MOD ~ 8.46e13 << 2^63
+        return static_cast<double>(x) / static_cast<double>(MOD);
+    }
+
+    // Fill a vector with N uniforms
+    void fill_uniforms(vector<double>& u) {
+        for (double& v : u) v = next_uniform();
+    }
+};
+
 static inline double inv_norm_cdf_BSM(double u) {
     if (u <= 0.0) return -INFINITY;
     if (u >= 1.0) return  INFINITY;
